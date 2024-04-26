@@ -6,6 +6,29 @@ body {
   position: relative;
 }
 
+.container {
+  display: grid;
+  place-items: center; /* Allinea al centro sia orizzontalmente che verticalmente */
+  height: 100%; /* Altezza pari all'intero schermo */
+  width: 100%; /* Larghezza pari all'intero schermo */
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: grid;
+  place-items: center; /* Allinea al centro sia orizzontalmente che verticalmente */
+  height: 100%; /* Altezza pari all'intero schermo */
+  width: 100%; /* Larghezza pari all'intero schermo */
+}
+
+#qr-received {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 #json-container {
   background-color: #fff;
   border-radius: 5px;

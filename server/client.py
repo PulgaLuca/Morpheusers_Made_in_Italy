@@ -7,7 +7,7 @@ if __name__ == "__main__":
     prodotto = Prodotto(azienda, "canna da pesca", "diobo", "M3")
 
     urlAdd = 'http://127.0.0.1:5000/addProduct'
-    urlGet = 'http://127.0.0.1:5000/get'
+    urlGet = 'http://127.0.0.1:5000/getQR'
     urlReadQR = 'http://127.0.0.1:5000/getData'
     payload = prodotto.toJSON()
 

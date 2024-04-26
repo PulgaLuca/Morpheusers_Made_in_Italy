@@ -1,12 +1,13 @@
 var video = document.createElement("video");
 var canvasElement = document.getElementById("canvas");
-var canvas = canvasElement.getContext("2d");
+var canvas = canvasElement.getContext("2d", { willReadFrequently: true });
 var loadingMessage = document.getElementById("loadingMessage");
 var outputContainer = document.getElementById("output");
 var outputMessage = document.getElementById("outputMessage");
 var outputData = document.getElementById("outputData");
 const jsonOutput = document.getElementById('json-output');
 var found = false;
+var going = false;
 
 function drawLine(begin, end, color) {
   canvas.beginPath();
@@ -17,13 +18,26 @@ function drawLine(begin, end, color) {
   canvas.stroke();
 }
 
-// Use facingMode: environment to attemt to get the front camera on phones
-navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
-  video.srcObject = stream;
-  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-  video.play();
-  requestAnimationFrame(tick);
-});
+function startStreamVideo(){
+  going = true;
+  // Use facingMode: environment to attemt to get the front camera on phones
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+    video.srcObject = stream;
+    video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+    video.play();
+    requestAnimationFrame(tick);
+  });
+}
+
+function stopStreamedVideo() {
+  if(!going) return;
+  const stream = video.srcObject;
+  const tracks = stream.getTracks();
+
+  tracks.forEach(function(track) {
+      track.stop();
+  });
+}
 
 function tick() {
   //mi fermo al primo qr letto

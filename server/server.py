@@ -26,9 +26,9 @@ def saveProducts(allProd):
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/get', methods=['POST'])
+@app.route('/getQR', methods=['POST'])
 def getQR():
-    req = json.loads(request.get_json())
+    req = request.json
     #create product from json
     product = Prodotto(req['azienda'], req['categoria'], req['name'], req['model'])
 
