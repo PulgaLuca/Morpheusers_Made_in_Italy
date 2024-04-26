@@ -1,13 +1,17 @@
-var azienda = {};
+var azienda = {      
+    "PIVA": "PIVA",
+    "nome": "nome",
+    "sede": "sede"
+};
 var prodotto = {
     "azienda": {
-      "PIVA": "culoculo",
-      "nome": "merda",
-      "sede": "Napoli"
+      "PIVA": "PIVA",
+      "nome": "nome",
+      "sede": "sede"
     },
-    "categoria": "canna da pesca",
-    "model": "M3",
-    "name": "diobo"
+    "categoria": "categoria",
+    "model": "modello",
+    "name": "esempio"
 };
 
 function RegisterAzienda() {
@@ -40,4 +44,5 @@ function RegisterProdotto() {
     });
     prodotto['azienda'] = azienda;
     console.log(prodotto); // stampa l'oggetto con i valori degli input
+    addProduct();
 }

@@ -5,7 +5,6 @@ var loadingMessage = document.getElementById("loadingMessage");
 var outputContainer = document.getElementById("output");
 var outputMessage = document.getElementById("outputMessage");
 var outputData = document.getElementById("outputData");
-const jsonOutput = document.getElementById('json-output');
 var found = false;
 var going = false;
 
@@ -93,15 +92,15 @@ function getJSON(data){
             // Converti la stringa JSON all'interno di "product" in un oggetto JSON
             const productObj = JSON.parse(jsonResponse.product);
             console.log("Risposta JSON:", productObj);
-            showJSON(productObj);
+            showJSON(productObj, document.getElementById('json-output'));
         }
-        else showJSON(jsonResponse);
+        else showJSON(jsonResponse, document.getElementById('json-output'));
     }).catch(error => {
         console.error('Errore durante la richiesta:', error);
     });
 }
 
-function showJSON(json){
+function showJSON(json, jsonOutput){
     // Converti l'oggetto JSON in una stringa formattata JSON
     const jsonString = JSON.stringify(json, null, 2);
 

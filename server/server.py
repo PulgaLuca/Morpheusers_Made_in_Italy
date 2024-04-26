@@ -37,24 +37,24 @@ def getQR():
     #read all saved products from file
     allProducts = readProducts()
     for i,prod in enumerate(allProducts):
-        #print(prod.getID())
+        #print(prod.toJSONClean())
         if prod.getID() == id:
             filename = 'qr.png'
             #makes code with query for product and ID
             hash = genQR(prod, filename)
 
-            print(hash)
+            #print(hash)
 
             #modify values in product to generate different qr-codes
             allProducts[i].incNumber()
             allProducts[i].addHash(hash)
             saveProducts(allProducts)
             return send_file(filename, mimetype='image/jpeg')
-        return jsonify({'error': 'data not found'})
+    return jsonify({'error': 'data not found'})
 
 @app.route('/addProduct', methods = ['POST'])
 def addProductReq():
-    req = json.loads(request.get_json())
+    req = request.json
     #create product from json
     product = Prodotto(req['azienda'], req['categoria'], req['name'], req['model'])
 
@@ -71,34 +71,29 @@ def addProductReq():
 
     saveProducts(allProducts)
 
-    return jsonify({'success': 'product has been added (hopefully)'})
+    return jsonify({'success': 'product has been added'})
 
 #TODO
 @app.route('/getData', methods = ['POST'])
 def getDataFromQR():
     req = request.json
 
-    #uploaded_file = request.files['qr-code']
-
-    #uploaded_file.save('tmp.png')
-
-    #code = readQR('tmp.png')
     code = req['qr-code']
     try:
         code = decQRData(code)
     except:
         return jsonify({'error' : 'code not valid'})
-    print("code =", code)
+    #print("code =", code)
 
     #read all saved products from file
     allProducts = readProducts()
     
     for prod in allProducts:
         for hash in prod.getHistory():
-            print("hash =",hash)
+            #print("hash =",hash)
             #if I found the exact product
             if hash == code:
-                print("found")
+                #print("found")
                 return jsonify({'product' : prod.toJSONClean()})
 
     return jsonify({'error': 'product not found'})

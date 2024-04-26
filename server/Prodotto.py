@@ -30,6 +30,7 @@ class Prodotto(object):
             indent=4))
         del res['history']
         del res['id']
+        del res['number']
         return json.dumps(res)
     
     def addHash(self, hash):

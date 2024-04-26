@@ -73,8 +73,11 @@
           <input type="textProdotto" class="form-control" id="model" placeholder="Modello">
         </div>
         <hr></hr>
-        <button id = "buttonRegisterProdotto" type="submit" class="btn btn-primary" onclick="RegisterProdotto()">Registrati</button>
       </form>
+      <button id = "buttonRegisterProdotto" type="submit" class="btn btn-primary" onclick="RegisterProdotto()">Aggiungi</button>
+      <div id="json-container">
+        <pre id="json-response"></pre>
+      </div>
     </div>
 
     <div id="ScreenGetQR" class="screen">
@@ -93,5 +96,6 @@
   <script src="qr-detect.js"></script>
   <script src="registra.js"></script>
   <script src="getQR.js"></script>
+  <script src="aggiungi.js"></script>
 </body>
 </html>
