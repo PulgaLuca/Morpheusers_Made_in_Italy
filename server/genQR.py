@@ -70,6 +70,12 @@ def genQR(product, filename, cipher = None):
     #decoded = decryptAndDecode(encoded, cipher)
     return base64.b64encode(id).decode()
 
+def decQRData(data):
+    cipher = loadCipher()
+    encoded_text = data.encode()
+    decoded_text = decryptAndDecode(encoded_text, cipher)
+    return decoded_text
+
 def readQR(filename, cipher = None, compare=None):
     if(cipher is None): cipher = loadCipher()
 

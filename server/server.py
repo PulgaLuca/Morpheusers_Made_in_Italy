@@ -1,4 +1,4 @@
-from genQR import genQR, readQR
+from genQR import genQR, readQR, decQRData
 from Prodotto import Prodotto
 import base64
 
@@ -7,6 +7,7 @@ import pickle
 import json
 import hashlib
 from flask import Flask, jsonify, request, send_file
+from flask_cors import CORS
 
 def readProducts():
     with open("prodotti.pkl", "rb") as f:
@@ -23,6 +24,7 @@ def saveProducts(allProd):
     
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/get', methods=['POST'])
 def getQR():
@@ -74,12 +76,19 @@ def addProductReq():
 #TODO
 @app.route('/getData', methods = ['POST'])
 def getDataFromQR():
-    uploaded_file = request.files['qr-code']
+    req = request.json
 
-    uploaded_file.save('tmp.png')
+    #uploaded_file = request.files['qr-code']
 
-    code = readQR('tmp.png')
-    print("code =",code)
+    #uploaded_file.save('tmp.png')
+
+    #code = readQR('tmp.png')
+    code = req['qr-code']
+    try:
+        code = decQRData(code)
+    except:
+        return jsonify({'error' : 'code not valid'})
+    print("code =", code)
 
     #read all saved products from file
     allProducts = readProducts()
@@ -92,6 +101,6 @@ def getDataFromQR():
                 print("found")
                 return jsonify({'product' : prod.toJSONClean()})
 
-    return jsonify({'error': 'code not found'})
+    return jsonify({'error': 'product not found'})
 
 app.run(port=8000)

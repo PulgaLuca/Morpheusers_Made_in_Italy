@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <title>jsQR Demo</title>
   <script src="./jsQR.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Ropa+Sans" rel="stylesheet"> -->
   <link href="styles.css" rel="stylesheet">
 </head>
 <body>
@@ -15,6 +15,9 @@
   <div id="output" hidden>
     <div id="outputMessage">No QR code detected.</div>
     <div hidden><b>Data:</b> <span id="outputData"></span></div>
+  </div>
+  <div id="json-container">
+    <pre id="json-output"></pre>
   </div>
   <script src="qr-detect.js"></script>
 </body>

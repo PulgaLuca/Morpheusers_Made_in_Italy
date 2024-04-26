@@ -6,6 +6,18 @@ body {
   position: relative;
 }
 
+#json-container {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#json-output {
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
 #githubLink {
   position: absolute;
   right: 0;
