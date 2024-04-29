@@ -80,11 +80,14 @@ function getJSON(data){
     var qr = new Object();
     qr['qr-code'] = data;
     console.log(qr);
-    fetch("https://Eric169.pythonanywhere.com/getData", {
+    fetch(url + "/getData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(qr)
     }).then(res => {
+        if(!response.ok){
+          throw new Error();
+        }
         // Estrai il testo dalla risposta
         return res.text();
     }).then(text => {

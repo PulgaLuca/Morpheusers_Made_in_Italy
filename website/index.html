@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div id="ScreenRegistraAzienda" class="screen active">
+    <div id="ScreenRegistraAzienda" class="screen">
       <!-- Contenuto della seconda schermata -->
       <form>
         <div class="form-row">
@@ -54,9 +54,27 @@
       </form>
     </div>
 
-    <div id="ScreenAddProduct" class="screen">
+    <div id="ScreenAddProduct" class="screen active">
       <!-- Contenuto della seconda schermata -->
       <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="nome">Nome Azienda</label>
+            <input type="textFiliale" class="form-control" id="nome" placeholder="Nome azienda">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="PIVA">Partita IVA</label>
+            <input type="textFiliale" class="form-control" id="PIVA" placeholder="Partita IVA">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sede">Via</label>
+          <input type="textFiliale" class="form-control" id="sede" placeholder="Via . . . 36">
+          <label for="lavorazione">Lavorazione</label>
+          <input type="textFiliale" class="form-control" id="lavorazione" placeholder="es. confezionamento">
+        </div>
+        <button id = "buttonRegister" type="button" class="btn btn-primary" onclick="addFiliale()">Aggiungi filiale</button>
+        <hr></hr>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="nome">Nome Prodotto</label>
@@ -71,25 +89,36 @@
           <label for="model">Modello</label>
           <input type="textProdotto" class="form-control" id="model" placeholder="Modello">
         </div>
+        <button id = "buttonSetProdotto" type="button" class="btn btn-primary" onclick="SetProdotto()">SET</button>
         <hr></hr>
       </form>
       <button id = "buttonRegisterProdotto" type="button" class="btn btn-primary" onclick="RegisterProdotto()">Aggiungi</button>
       <hr>
-      <h3>Azienda corrente</h3>
+      <div class="product-card">
+        <div class="product-details" id="productDetails"></div>
+        <div class="product-details" id="filialiDetails"></div>
+      </div>
+      <!--
       <div id="json-container">
         <pre id="json-response"></pre>
       </div>
+      -->
     </div>
 
     <div id="ScreenGetQR" class="screen">
-      <h2>Dati da inviare</h2>
-      <div id="json-container">
-        <pre id="json-to-send"></pre>
+      <div class="d-flex flex-row mt-3">
+        <div class="" id="box">
+          <h2>Dati da inviare</h2>
+          <div id="json-container">
+            <pre id="json-to-send"></pre>
+          </div>
+        </div>
       </div>
-      <button id = "buttonSendProduct" type="button" class="btn btn-primary" onclick="sendJSON()">Invia</button>
+      <button id = "buttonSendProduct" type="button" class="btn btn-primary mt-3" onclick="sendJSON()">Richiedi QR code</button>
       <hr>
       <canvas id="qr-received"></canvas>
       <button id="buttonDownload" class="btn btn-primary" onclick="downloadImage()">Scarica</button>
+      
     </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

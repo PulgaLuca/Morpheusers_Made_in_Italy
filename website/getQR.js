@@ -3,12 +3,17 @@ function setupGetQR(){
 }
 
 function sendJSON(){
-    fetch("https://Eric169.pythonanywhere.com/getQR", {
+    fetch(url + "/getQR", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(prodotto)
     })
-    .then(response => response.blob()) // Ottieni i dati dell'immagine come Blob
+    .then(response => {
+        if(!response.ok){
+            throw new Error();
+        }
+        return response.blob();
+    }) // Ottieni i dati dell'immagine come Blob
     .then(blob => {
         var url = URL.createObjectURL(blob); // Crea un URL temporaneo
         var img = new Image();
@@ -23,6 +28,9 @@ function sendJSON(){
         };
     
         img.src = url; // Imposta l'URL temporaneo come sorgente dell'immagine
+    })
+    .catch(error => {
+        alert('Errore durante la richiesta:', error);
     });
 }
 

@@ -19,7 +19,7 @@ def readProducts():
     return allProducts
 
 def saveProducts(allProd):
-    with open("prodotti.pkl", 'wb') as outp:  # Overwrites any existing file.
+    with open("prodotti.pkl", 'wb') as outp:  #Overwrites any existing file.
         pickle.dump(allProd, outp, pickle.HIGHEST_PROTOCOL)
     
 
@@ -30,48 +30,50 @@ CORS(app)
 def getQR():
     req = request.json
     #create product from json
-    product = Prodotto(req['azienda'], req['categoria'], req['name'], req['model'])
+    product = Prodotto(req['name'], req['categoria'], req['model'], req['filiale'])
 
     id = base64.b64encode(hashlib.sha256((str(product.toJSON())).encode()).digest()).decode()
 
     #read all saved products from file
     allProducts = readProducts()
     for i,prod in enumerate(allProducts):
-        #print(prod.toJSONClean())
         if prod.getID() == id:
             filename = 'qr.png'
+
             #makes code with query for product and ID
             hash = genQR(prod, filename)
-
-            #print(hash)
 
             #modify values in product to generate different qr-codes
             allProducts[i].incNumber()
             allProducts[i].addHash(hash)
             saveProducts(allProducts)
             return send_file(filename, mimetype='image/jpeg')
-    return jsonify({'error': 'data not found'})
+    return jsonify({'error': 'prodotto non presente'})
 
 @app.route('/addProduct', methods = ['POST'])
 def addProductReq():
     req = request.json
     #create product from json
-    product = Prodotto(req['azienda'], req['categoria'], req['name'], req['model'])
+    product = Prodotto(req['name'], req['categoria'], req['model'], req['filiale'])
 
     id = base64.b64encode(hashlib.sha256((str(product.toJSON())).encode()).digest()).decode()
 
     #read all saved products from file
     allProducts = readProducts()
     for prod in allProducts:
+        #check if the product aready exists
         if prod.getID() == id:
-            return jsonify({'error': 'product has alredy been added'})
+            return jsonify({'error': 'prodotto già presente'})
     
+
     product.saveId()
+
+    #add the product
     allProducts.append(product)
 
     saveProducts(allProducts)
 
-    return jsonify({'success': 'product has been added'})
+    return jsonify({'success': 'prodotto aggiunto correttamente'})
 
 #TODO
 @app.route('/getData', methods = ['POST'])
@@ -80,20 +82,18 @@ def getDataFromQR():
 
     code = req['qr-code']
     try:
+        #decode the encrypted data
         code = decQRData(code)
     except:
-        return jsonify({'error' : 'code not valid'})
-    #print("code =", code)
+        return jsonify({'error' : "errore nella decodifica, probabilmente non è un QR dell'app"})
 
     #read all saved products from file
     allProducts = readProducts()
     
     for prod in allProducts:
         for hash in prod.getHistory():
-            #print("hash =",hash)
             #if I found the exact product
             if hash == code:
-                #print("found")
                 return jsonify({'product' : prod.toJSONClean()})
 
     return jsonify({'error': 'product not found'})

@@ -3,11 +3,11 @@ import hashlib
 import base64
 
 class Prodotto(object):
-    def __init__(self, azienda, categoria, name, model):
-        self.azienda = azienda
-        self.categoria = categoria
+    def __init__(self, name, categoria, model, filiale):
         self.name = name
+        self.categoria = categoria
         self.model = model
+        self.filiale = filiale
         self.id = -1
         self.number = 0
         self.history = []
@@ -16,9 +16,10 @@ class Prodotto(object):
         res = json.loads(json.dumps(
             self,
             default=lambda o: o.__dict__, 
-            sort_keys=True,
+            sort_keys=False,
             indent=4))
         del res['history']
+        del res['filiale']
         return json.dumps(res)
     
     #doesn't return the id for safety reasons
@@ -26,10 +27,11 @@ class Prodotto(object):
         res = json.loads(json.dumps(
             self,
             default=lambda o: o.__dict__, 
-            sort_keys=True,
+            sort_keys=False,
             indent=4))
-        del res['history']
         del res['id']
+        #remove also not necessary data
+        del res['history']
         del res['number']
         return json.dumps(res)
     

@@ -6,6 +6,21 @@ body {
   position: relative;
 }
 
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 30px; /* Modifica la quantità di spazio tra le colonne regolando il valore qui */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
 .container {
   display: grid;
   place-items: center; /* Allinea al centro sia orizzontalmente che verticalmente */

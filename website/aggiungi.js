@@ -1,5 +1,5 @@
 function addProduct(){
-    fetch("https://Eric169.pythonanywhere.com/addProduct", {
+    fetch(url + "/addProduct", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(prodotto)
@@ -8,14 +8,12 @@ function addProduct(){
         return res.text();
     }).then(text => {
         const jsonResponse = JSON.parse(text);
-        if(jsonResponse.product){
+        if(jsonResponse.success){
             // Converti la stringa JSON all'interno di "product" in un oggetto JSON
-            const productObj = JSON.parse(jsonResponse.product);
-            console.log("Risposta JSON:", productObj);
-            showJSON(productObj, document.getElementById('json-response'));
+            alert(jsonResponse.success);
         }
-        else showJSON(jsonResponse, document.getElementById('json-response'));
+        else alert(jsonResponse.error);
     }).catch(error => {
-        console.error('Errore durante la richiesta:', error);
+        alert('Errore durante la richiesta:', error);
     });
 }
