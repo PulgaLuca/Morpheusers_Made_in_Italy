@@ -47,8 +47,10 @@ function tick() {
     canvasElement.hidden = false;
     outputContainer.hidden = false;
 
-    canvasElement.height = video.videoHeight;
-    canvasElement.width = video.videoWidth;
+    /*canvasElement.height = video.videoHeight;
+    canvasElement.width = video.videoWidth;*/
+    canvasElement.height = window.screen.height;
+    canvasElement.width = window.screen.width;
     canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
     var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
     var code = jsQR(imageData.data, imageData.width, imageData.height, {
@@ -78,7 +80,7 @@ function getJSON(data){
     var qr = new Object();
     qr['qr-code'] = data;
     console.log(qr);
-    fetch("http://127.0.0.1:8000/getData", {
+    fetch("https://Eric169.pythonanywhere.com/getData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(qr)

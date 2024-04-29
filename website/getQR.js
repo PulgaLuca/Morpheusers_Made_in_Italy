@@ -1,9 +1,9 @@
-function setup(){
+function setupGetQR(){
     document.getElementById('json-to-send').textContent = JSON.stringify(prodotto, null, 4);
 }
 
 function sendJSON(){
-    fetch("http://127.0.0.1:8000/getQR", {
+    fetch("https://Eric169.pythonanywhere.com/getQR", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(prodotto)

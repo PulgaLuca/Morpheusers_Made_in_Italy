@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     linkScreenGetQR.addEventListener('click', function(event) {
         event.preventDefault(); // Evita il comportamento predefinito del link
         stopStreamedVideo();
-        setup();
+        setupGetQR();
         setActiveScreen(ScreenGetQR);
     });
   
@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     linkScreenAddProduct.addEventListener('click', function(event) {
       stopStreamedVideo();
       event.preventDefault(); // Evita il comportamento predefinito del link
+      setupRegistraProdotto();
       setActiveScreen(ScreenAddProduct);
     });
   
