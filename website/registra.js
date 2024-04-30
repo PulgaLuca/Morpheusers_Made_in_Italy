@@ -15,7 +15,9 @@ function RegisterAzienda() {
     document.getElementById("nome").value = "";
     document.getElementById("PIVA").value = "";
     document.getElementById("sede").value = "";
+    prodotto = { 'filiale' : [] };
     prodotto.filiale.push(azienda);
+    displayProductDetails();
 }
 
 function clearProductDetails() {
@@ -52,8 +54,6 @@ function displayProductDetails() {
         var tableHTMLFiliali = "<table>"; // Inizio tabella
         tableHTMLFiliali += "<tr><th>Azienda</th><th>PIVA</th><th>Sede</th><th>Lavorazione</th></tr>"; // Intestazione tabella
         prodotto.filiale.forEach(function(azienda, index) {
-            var nomeFittizio = "Azienda " + (index + 1); // Nome fittizio dell'azienda
-
             tableHTMLFiliali += "<tr>"; // Inizio riga per l'azienda
             tableHTMLFiliali += `<td>${azienda.nome}</td>`; // Nome dell'azienda
             tableHTMLFiliali += `<td>${azienda.PIVA}</td>`; // PIVA dell'azienda

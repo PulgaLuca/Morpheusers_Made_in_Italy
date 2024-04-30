@@ -29,26 +29,29 @@ CORS(app)
 @app.route('/getQR', methods=['POST'])
 def getQR():
     req = request.json
-    #create product from json
-    product = Prodotto(req['name'], req['categoria'], req['model'], req['filiale'])
+    try:
+        #create product from json
+        product = Prodotto(req['name'], req['categoria'], req['model'], req['filiale'])
 
-    id = base64.b64encode(hashlib.sha256((str(product.toJSON())).encode()).digest()).decode()
+        id = base64.b64encode(hashlib.sha256((str(product.toJSON())).encode()).digest()).decode()
 
-    #read all saved products from file
-    allProducts = readProducts()
-    for i,prod in enumerate(allProducts):
-        if prod.getID() == id:
-            filename = 'qr.png'
+        #read all saved products from file
+        allProducts = readProducts()
+        for i,prod in enumerate(allProducts):
+            if prod.getID() == id:
+                filename = 'qr.png'
 
-            #makes code with query for product and ID
-            hash = genQR(prod, filename)
+                #makes code with query for product and ID
+                hash = genQR(prod, filename)
 
-            #modify values in product to generate different qr-codes
-            allProducts[i].incNumber()
-            allProducts[i].addHash(hash)
-            saveProducts(allProducts)
-            return send_file(filename, mimetype='image/jpeg')
-    return jsonify({'error': 'prodotto non presente'})
+                #modify values in product to generate different qr-codes
+                allProducts[i].incNumber()
+                allProducts[i].addHash(hash)
+                saveProducts(allProducts)
+                return send_file(filename, mimetype='image/jpeg')
+        return jsonify({'error': 'prodotto non presente'})
+    except:
+        return jsonify({'error' : "Dati prodotto non presenti o non validi"})
 
 @app.route('/addProduct', methods = ['POST'])
 def addProductReq():

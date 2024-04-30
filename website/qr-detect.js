@@ -18,14 +18,19 @@ function drawLine(begin, end, color) {
 }
 
 function startStreamVideo(){
-  going = true;
   // Use facingMode: environment to attemt to get the front camera on phones
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+    going = true;
+    found = false;
     video.srcObject = stream;
     video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
     video.play();
     requestAnimationFrame(tick);
-  });
+  })
+  .catch(function(error) {
+    // Permesso negato o errore
+    alert("Errore nell'ottenere l'accesso alla videocamera:", error);
+  });;
 }
 
 function stopStreamedVideo() {
@@ -47,8 +52,6 @@ function tick() {
     canvasElement.hidden = false;
     outputContainer.hidden = false;
 
-    /*canvasElement.height = video.videoHeight;
-    canvasElement.width = video.videoWidth;*/
     canvasElement.height = window.screen.height;
     canvasElement.width = window.screen.width;
     canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
@@ -85,7 +88,7 @@ function getJSON(data){
         headers: {'Content-Type': 'application/json'}, 
         body: JSON.stringify(qr)
     }).then(res => {
-        if(!response.ok){
+        if(!res.ok){
           throw new Error();
         }
         // Estrai il testo dalla risposta
@@ -96,13 +99,20 @@ function getJSON(data){
         if(jsonResponse.product){
             // Converti la stringa JSON all'interno di "product" in un oggetto JSON
             const productObj = JSON.parse(jsonResponse.product);
-            console.log("Risposta JSON:", productObj);
-            showJSON(productObj, document.getElementById('json-output'));
+            prodotto = productObj;
+            displayProductDetails();
         }
-        else showJSON(jsonResponse, document.getElementById('json-output'));
+        else {
+          alert("Errore " + jsonResponse.error);
+        }
     }).catch(error => {
-        console.error('Errore durante la richiesta:', error);
+        console.error('Errore durante la richiesta: ', error);
     });
+}
+
+function Restart(){
+  stopStreamedVideo();
+  startStreamVideo();
 }
 
 function showJSON(json, jsonOutput){

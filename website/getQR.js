@@ -12,6 +12,14 @@ function sendJSON(){
         if(!response.ok){
             throw new Error();
         }
+
+        //se non mi viene data un immagine c'è stato un errore
+        var contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("image/jpeg")) {
+            response.json().then(function(data) {
+                throw new Error(data.error);
+            });
+        }
         return response.blob();
     }) // Ottieni i dati dell'immagine come Blob
     .then(blob => {
