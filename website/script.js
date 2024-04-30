@@ -1,5 +1,5 @@
-//https://Eric169.pythonanywhere.com
-var url = 'http://localhost:8000/'
+var url = 'https://Eric169.pythonanywhere.com'
+//var url = 'http://localhost:8000/'
 
 document.addEventListener('DOMContentLoaded', function() {
     const linkQrScanner = document.getElementById('linkQrScanner');
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault(); // Evita il comportamento predefinito del link
       startStreamVideo();
       clearProductDetails();
+      ClearQR();
       setActiveScreen(screenQRScanner);
     });
 
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
       stopStreamedVideo();
       event.preventDefault(); // Evita il comportamento predefinito del link
       clearProductDetails();
+      ClearQR();
       setActiveScreen(ScreenRegistraAzienda);
     });
   
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
       stopStreamedVideo();
       event.preventDefault(); // Evita il comportamento predefinito del link
       displayProductDetails();
+      ClearQR();
       setActiveScreen(ScreenAddProduct);
     });
   

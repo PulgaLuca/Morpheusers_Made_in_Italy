@@ -14,6 +14,6 @@ function addProduct(){
         }
         else alert(jsonResponse.error);
     }).catch(error => {
-        alert('Errore durante la richiesta:', error);
+        alert('Errore durante la richiesta: ' + error.message);
     });
 }

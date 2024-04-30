@@ -2,6 +2,14 @@ function setupGetQR(){
     document.getElementById('json-to-send').textContent = JSON.stringify(prodotto, null, 4);
 }
 
+function ClearQR(){
+    var canvas = document.getElementById('qr-received'); // Sostituisci 'canvas' con l'id del tuo canvas
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.width = 0;
+    canvas.height = 0;
+}
+
 function sendJSON(){
     fetch(url + "/getQR", {
         method: "POST",
@@ -10,14 +18,16 @@ function sendJSON(){
     })
     .then(response => {
         if(!response.ok){
-            throw new Error();
+            return Promise.reject(new Error('Errore durante la richiesta'));
         }
 
         //se non mi viene data un immagine c'è stato un errore
         var contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("image/jpeg")) {
-            response.json().then(function(data) {
-                throw new Error(data.error);
+            return response.text().then(text => {
+                const jsonResponse = JSON.parse(text);
+                console.log(jsonResponse.error);
+                return Promise.reject(new Error(jsonResponse.error));
             });
         }
         return response.blob();
@@ -38,7 +48,7 @@ function sendJSON(){
         img.src = url; // Imposta l'URL temporaneo come sorgente dell'immagine
     })
     .catch(error => {
-        alert('Errore durante la richiesta:', error);
+        alert('Errore durante la richiesta: ' + error.message);
     });
 }
 

@@ -106,7 +106,7 @@ function getJSON(data){
           alert("Errore " + jsonResponse.error);
         }
     }).catch(error => {
-        console.error('Errore durante la richiesta: ', error);
+        console.error('Errore durante la richiesta: ' + error.message);
     });
 }
 
