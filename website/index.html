@@ -17,24 +17,24 @@
       <a id="linkScreenGetQR" class="nav-link" href="#">Get QR</a>
     </nav>
 
-    <div id="ScreenQRScanner" class="screen">
+    <div id="ScreenQRScanner" class="screen active">
       <!-- Contenuto della prima schermata -->
       <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
       <canvas id="canvas" hidden></canvas>
+      <hr>
       <button id = "restart" type="button" class="btn btn-primary" onclick="Restart()">Restart</button>
+      <hr>
+      <h2 id="ActivationState"></h2>
+      <hr>
+      <button hidden id = "setActive" type="button" class="btn btn-primary" onclick="SetActive()">SET ACTIVE</button>
       <div id="output" hidden>
         <div id="outputMessage">No QR code detected.</div>
         <div hidden><b>Data:</b> <span id="outputData"></span></div>
       </div>
-      
-      <!-- 
-      <div id="json-container">
-        <pre id="json-output"></pre>
-      </div>
-      -->
+
     </div>
 
-    <div id="ScreenRegistraAzienda" class="screen active">
+    <div id="ScreenRegistraAzienda" class="screen">
       <!-- Contenuto della seconda schermata -->
       <form>
         <div class="form-row">

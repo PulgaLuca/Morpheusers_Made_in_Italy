@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ScreenRegistraAzienda = document.getElementById('ScreenRegistraAzienda');
     const ScreenAddProduct = document.getElementById('ScreenAddProduct');
     const ScreenGetQR = document.getElementById('ScreenGetQR');
-  
+
     linkQrScanner.addEventListener('click', function(event) {
       event.preventDefault(); // Evita il comportamento predefinito del link
       startStreamVideo();

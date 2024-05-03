@@ -25,10 +25,21 @@ function clearProductDetails() {
     var filialiDetails = document.getElementById("filialiDetails");
     productDetails.innerHTML = "";
     filialiDetails.innerHTML = "";
+
+    document.getElementById('ActivationState').textContent = "";
+    document.getElementById('setActive').hidden = true;
 }
 
-function displayProductDetails() {
+function displayProductDetails(isActive) {
     clearProductDetails(); // Pulisce i dettagli prima di visualizzarli
+
+    const headerActivationState = document.getElementById("ActivationState");
+    headerActivationState.textContent = (isActive ? "ACTIVE" : "NOT ACTIVE");
+    headerActivationState.style.color = (isActive ? "green" : "orange");
+    if(!isActive){
+      document.getElementById('setActive').hidden = false;
+    }
+
     var productDetails = document.getElementById("productDetails");
     var filialiDetails = document.getElementById("filialiDetails");
     if('name' in prodotto){

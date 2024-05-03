@@ -36,7 +36,8 @@ class Prodotto(object):
         return json.dumps(res)
     
     def addHash(self, hash):
-        self.history.append(hash)
+        toAdd = {"hash":hash, "isActive":False}
+        self.history.append(toAdd)
     
     def getHistory(self):
         return self.history
@@ -54,3 +55,9 @@ class Prodotto(object):
     
     def incNumber(self):
         self.number += 1
+    
+    def setActive(self, idx):
+        self.history[idx]['isActive'] = True
+
+    def remove(self, elem):
+        self.history.remove(elem)

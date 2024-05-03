@@ -26,7 +26,7 @@ function sendJSON(){
         if (!contentType || !contentType.includes("image/jpeg")) {
             return response.text().then(text => {
                 const jsonResponse = JSON.parse(text);
-                console.log(jsonResponse.error);
+                //console.log(jsonResponse.error);
                 return Promise.reject(new Error(jsonResponse.error));
             });
         }

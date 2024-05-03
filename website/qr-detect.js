@@ -7,6 +7,7 @@ var outputMessage = document.getElementById("outputMessage");
 var outputData = document.getElementById("outputData");
 var found = false;
 var going = false;
+var data;
 
 function drawLine(begin, end, color) {
   canvas.beginPath();
@@ -18,6 +19,7 @@ function drawLine(begin, end, color) {
 }
 
 function startStreamVideo(){
+  document.getElementById('setActive').hidden = true;
   // Use facingMode: environment to attemt to get the front camera on phones
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
     going = true;
@@ -67,10 +69,11 @@ function tick() {
       drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
 
       outputMessage.hidden = true;
-      outputData.parentElement.hidden = false;
-      outputData.innerText = code.data;
+      //outputData.parentElement.hidden = false;
+      //outputData.innerText = code.data;
       found = 1;
-      getJSON(code.data);
+      data = code.data;
+      getJSON();
     } else {
       outputMessage.hidden = false;
       outputData.parentElement.hidden = true;
@@ -79,10 +82,9 @@ function tick() {
   requestAnimationFrame(tick);
 }
 
-function getJSON(data){
+function getJSON(){
     var qr = new Object();
     qr['qr-code'] = data;
-    console.log(qr);
     fetch(url + "/getData", {
         method: "POST",
         headers: {'Content-Type': 'application/json'}, 
@@ -100,10 +102,12 @@ function getJSON(data){
             // Converti la stringa JSON all'interno di "product" in un oggetto JSON
             const productObj = JSON.parse(jsonResponse.product);
             prodotto = productObj;
-            displayProductDetails();
+            displayProductDetails(jsonResponse.isActive);
         }
         else {
-          alert("Errore " + jsonResponse.error);
+          const headerActivationState = document.getElementById("ActivationState");
+          headerActivationState.style.color = "red";
+          headerActivationState.textContent = "NOT VALID";
         }
     }).catch(error => {
         console.error('Errore durante la richiesta: ' + error.message);
@@ -111,6 +115,7 @@ function getJSON(data){
 }
 
 function Restart(){
+  clearProductDetails();
   stopStreamedVideo();
   startStreamVideo();
 }
@@ -121,4 +126,32 @@ function showJSON(json, jsonOutput){
 
     // Mostra la stringa JSON nell'elemento del DOM
     jsonOutput.textContent = jsonString;
+}
+
+function SetActive(){
+  var qr = new Object();
+  qr['qr-code'] = data;
+  fetch(url + "/setActive", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(qr)
+  }).then(res => {
+      if(!res.ok){
+        throw new Error();
+      }
+      // Estrai il testo dalla risposta
+      return res.text();
+  }).then(text => {
+      const jsonResponse = JSON.parse(text);
+
+      if(jsonResponse.success){
+          // Converti la stringa JSON all'interno di "product" in un oggetto JSON
+          alert("Success " + jsonResponse.success);
+      }
+      else {
+        alert("Errore " + jsonResponse.error);
+      }
+  }).catch(error => {
+      alert('Errore durante la richiesta: ' + error.message);
+  });
 }

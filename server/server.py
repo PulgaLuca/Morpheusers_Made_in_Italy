@@ -78,7 +78,6 @@ def addProductReq():
 
     return jsonify({'success': 'prodotto aggiunto correttamente'})
 
-#TODO
 @app.route('/getData', methods = ['POST'])
 def getDataFromQR():
     req = request.json
@@ -94,11 +93,43 @@ def getDataFromQR():
     allProducts = readProducts()
     
     for prod in allProducts:
-        for hash in prod.getHistory():
+        for elem in prod.getHistory():
             #if I found the exact product
-            if hash == code:
-                return jsonify({'product' : prod.toJSONClean()})
+            if elem['hash'] == code:
+                print(elem['isActive'])
+                if elem['isActive']==True:
+                    prod.remove(elem)
+                saveProducts(allProducts)
+                return jsonify({'product' : prod.toJSONClean(), 'isActive' : elem['isActive']})
 
+    return jsonify({'error': 'product not found'})
+
+#set the qr code active
+@app.route('/setActive', methods = ['POST'])
+def setQRActive():
+    req = request.json
+
+    code = req['qr-code']
+    try:
+        #decode the encrypted data
+        code = decQRData(code)
+    except:
+        return jsonify({'error' : "errore nella decodifica, probabilmente non è un QR dell'app"})
+
+    #read all saved products from file
+    allProducts = readProducts()
+    
+    for prod in allProducts:
+        for i,elem in enumerate(prod.getHistory()):
+            #if I found the exact product
+            if elem['hash'] == code:
+                #if it's already active returns an error
+                if elem['isActive']==True:
+                    return jsonify({'error' : 'qr-code is already active'})
+                prod.setActive(i)
+                print(prod.getHistory()[i]['isActive'])
+                saveProducts(allProducts)
+                return jsonify({'success' : 'qr-code has been activated correctly'})
     return jsonify({'error': 'product not found'})
 
 app.run(port=8000)
